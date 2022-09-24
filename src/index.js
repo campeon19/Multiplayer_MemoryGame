@@ -3,13 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Inicio from './components/Inicio/Inicio';
+import Rooms from './components/Rooms/Rooms';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Inicio />
+    <Rooms />
   </React.StrictMode>
 );
 
