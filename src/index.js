@@ -4,13 +4,14 @@ import './index.css';
 import App from './App';
 import Inicio from './components/Inicio/Inicio';
 import Rooms from './components/Rooms/Rooms';
+import Memory from './components/Memory/memory';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Rooms />
+    <Memory />
   </React.StrictMode>
 );
 
