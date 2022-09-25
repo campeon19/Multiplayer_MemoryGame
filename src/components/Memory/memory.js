@@ -11,7 +11,8 @@ const cardImages = [
     {"src": "/img/osos.svg", matched: false },
     {"src": "/img/penguin.svg", matched: false },
     {"src": "/img/serpiente.svg", matched: false },
-    {"src": "/img/tortuga.svg", matched: false }
+    {"src": "/img/tortuga.svg", matched: false },
+    {"src": "/img/ardilla.svg", matched: false }
 ];
 
 
@@ -20,6 +21,7 @@ function Memory() {
   const [players, setPlayers] = useState([]);
   const [choice1, setChoice1] = useState(null);
   const [choice2, setChoice2] = useState(null);
+  const [disabled, setDisabled] = useState(false);
 
 
   const shuffleCards = () => {
@@ -27,6 +29,8 @@ function Memory() {
      .sort(() => Math.random() - 0.5)
      .map((card) => ({ ...card, id: Math.random() }));
 
+    setChoice1(null);
+    setChoice2(null);
     setCards(shuffleCards);
     };
 
@@ -34,8 +38,9 @@ function Memory() {
         choice1 ? setChoice2(card) : setChoice1(card);
     };
 
-    useEffect(() => {
+    useEffect(() => {      
         if(choice1 && choice2) {
+            setDisabled(true);
             if(choice1.src === choice2.src) {
                 setCards(prevCards => {
                     return prevCards.map(card => {
@@ -56,18 +61,30 @@ function Memory() {
     const resetTurn = () => {
         setChoice1(null);
         setChoice2(null);
+        setDisabled(false);
     };
 
+    useEffect(() => {
+        shuffleCards();
+    }, []);
+
   return (
-    <div className='memory'>
-        <h1>Memory Game</h1>
-        <button onClick={shuffleCards}>Start</button>
-        <div className='card-grid'>
-            {cards.map(card => (
-                <Card key={card.id} card={card} handleChoice={handleChoice} flipped={card === choice1 || card === choice2 || card.matched} />
-            ))}
+    <div>
+        <div className='memory'>
+            <h1>Memory Game</h1>
+            <div className='card-grid'>
+                {cards.map(card => (
+                    <Card 
+                        key={card.id} 
+                        card={card} 
+                        handleChoice={handleChoice} 
+                        flipped={card === choice1 || card === choice2 || card.matched} 
+                        disabled={disabled}
+                    />
+                ))}
+            </div>
+            
         </div>
-        
     </div>
   );
 }
