@@ -1,11 +1,33 @@
 .carta{
     position: relative;
+    // background-color: #fff;
 }
 
 .carta img{
-    width: 150px;
-    height: 170px;
-    padding-top: 5px;
-    border: 2px solid #fff;
-    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    // padding-top: 5px;
+    // border: 2px solid #fff;
+    border-radius: 6px;
+}
+
+
+.carta .front {
+    transform: rotateY(90deg);
+    transition: all ease-in 0.2s;
+    position: absolute;
+}
+.flipped .front {
+    transform: rotateY(0deg);
+    transition-delay: 0.2s;
+}
+
+.carta .back {
+    transition: all ease-in 0.2s;
+    transition-delay: 0.2s;
+}
+
+.flipped .back {
+    transform: rotateY(90deg);
+    transition-delay: 0s;
 }

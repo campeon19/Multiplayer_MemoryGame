@@ -23,8 +23,9 @@ function Memory() {
 
 
   const shuffleCards = () => {
-    const shuffleCards = [...cardImages, ...cardImages];
-    shuffleCards.sort(() => Math.random() - 0.5).map((card, index) => ({...card, id: Math.random()}));
+    const shuffleCards = [...cardImages, ...cardImages]
+     .sort(() => Math.random() - 0.5)
+     .map((card) => ({ ...card, id: Math.random() }));
 
     setCards(shuffleCards);
     };
@@ -36,14 +37,26 @@ function Memory() {
     useEffect(() => {
         if(choice1 && choice2) {
             if(choice1.src === choice2.src) {
-                console.log('match');
+                setCards(prevCards => {
+                    return prevCards.map(card => {
+                        if(card.src === choice1.src) {
+                            return {...card, matched: true};
+                        } else {
+                            return card;
+                        }
+                    });
+                });
             } else {
                 console.log('no match');
             }
-            setChoice1(null);
-            setChoice2(null);
+            setTimeout(() => resetTurn(), 1000);
         }
     }, [choice1, choice2]);
+
+    const resetTurn = () => {
+        setChoice1(null);
+        setChoice2(null);
+    };
 
   return (
     <div className='memory'>
@@ -51,7 +64,7 @@ function Memory() {
         <button onClick={shuffleCards}>Start</button>
         <div className='card-grid'>
             {cards.map(card => (
-                <Card key={card.id} card={card} handleChoice={handleChoice}/>
+                <Card key={card.id} card={card} handleChoice={handleChoice} flipped={card === choice1 || card === choice2 || card.matched} />
             ))}
         </div>
         
