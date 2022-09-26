@@ -1,0 +1,31 @@
+lobby {
+    usuario: text
+    autoridad: admin/player
+    lobby-size: 2/3/4
+    semilla: int
+    nombre_lobby:
+    password: text
+}
+
+juego{
+    turno_actual:
+    player: {
+        name: 
+        score:
+    }
+    choice1:
+    choice2:
+    parejas_encontradas:
+    player_state:
+}
+
+chat{
+    name:
+    message:
+}
+
+
+
+
+
+
