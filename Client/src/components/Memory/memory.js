@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './memory.scss';
 import Card from './card';
 import ContextSocket from '../../context/context-socketio';
+import { useLocation } from 'react-router-dom';
 
 // import ChatPopUp from '../Chat/ChatPopUp';
 
@@ -56,10 +57,20 @@ function Memory() {
     const [disabled, setDisabled] = useState(false);
     const [turn, setTurn] = useState(0);
     const [playerturn, setPlayerTurn] = useState(true);
+    const [username, setUsername] = useState('');
     const ply = [
-        { 'name': 'd()', 'score': 0 },
+        { 'name': 'Chris', 'score': 0 },
         { 'name': 'Player 2', 'score': 0 },
     ];
+
+    const { state } = useLocation();
+
+    useEffect(() => {
+        setUsername(state.username);
+        shuffleCards();
+    
+    }, []);
+    console.log(username);
 
 
 
@@ -93,7 +104,7 @@ function Memory() {
                 });
                 setPlayers(prevPlayers => {
                     return prevPlayers.map(player => {
-                        if (player.name === 'Player 1') {
+                        if (player.name === username) {
                             return { ...player, score: player.score + 1 };
                         } else {
                             return player;
@@ -115,10 +126,6 @@ function Memory() {
         setDisabled(false);
         setTurn(turn + 1);
     };
-
-    useEffect(() => {
-        shuffleCards();
-    }, []);
 
     return (
         <div>

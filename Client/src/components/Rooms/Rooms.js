@@ -1,17 +1,26 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Rooms.scss';
 import ContextSocket from '../../context/context-socketio';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Simple Create/Join Room
 
 function Rooms() {
+  const [username, setUsername] = useState('');
   const [newRoom, setNewRoom] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [roomSize, setRoomSize] = useState('');
   const [enterRoom, setEnterRoom] = useState('');
   const [enterPassword, setEnterPassword] = useState('');
+
+  const { state } = useLocation();
+
+  useEffect(() => {
+    setUsername(state.username);
+    // receiveUsersData();
+  }, []);
+  console.log(username);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,11 +37,11 @@ function Rooms() {
   const Socket = useContext(ContextSocket);
 
   function sendRoomsData() {
-    Socket.emit('createRoomInfo', { 'lobbyName': newRoom, 'password': newPassword, 'roomSize': roomSize });
+    Socket.emit('createRoomInfo', { 'lobbyName': newRoom, 'password': newPassword, 'roomSize': roomSize, 'anfitrion' : username, 'players': [username]});
   };
 
   function sendRoomsDataPublic() {
-    Socket.emit('joinRoom', { 'joinRoom': enterRoom, 'password': enterPassword });
+    Socket.emit('joinRoom', { 'lobbyName': enterRoom, 'password': enterPassword });
   };
 
   const navigate = useNavigate();
@@ -76,7 +85,7 @@ function Rooms() {
                       </div>
                     </div>
                     <div>
-                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsData(); navigate('/memory') }}> Start</button>
+                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsData(); navigate('/lobby', {state:{username: username, nameRoom: newRoom, password: newPassword}}) }}> Start</button>
                     </div>
                   </form>
                   <h4 className="mb-2 text-uppercase space">Or</h4>
@@ -91,7 +100,7 @@ function Rooms() {
                       <label className='form-label' htmlFor='lobbypassword'>Password</label>
                     </div>
                     <div>
-                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsDataPublic(); navigate('/memory') }}>Join</button>
+                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsDataPublic(); navigate('/lobby', {state:{username: username}}) }}>Join</button>
                     </div>
                   </form>
                 </div>

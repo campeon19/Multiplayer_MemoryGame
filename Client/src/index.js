@@ -5,6 +5,7 @@ import App from './App';
 import Inicio from './components/Inicio/Inicio';
 import Rooms from './components/Rooms/Rooms';
 import Memory from './components/Memory/memory';
+import Lobby from './components/Lobby/Lobby';
 import 'bootstrap';
 import { ContextSocketProvider } from './context/context-socketio';
 import {
@@ -23,6 +24,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/rooms" element={<Rooms />} />
+        <Route path="/lobby" element={<Lobby />} />
         <Route path="/memory" element={<Memory />} />
 
       </Routes>
