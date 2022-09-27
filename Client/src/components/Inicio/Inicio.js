@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Inicio.scss';
 import ContextSocket from '../../context/context-socketio';
+import { useNavigate } from 'react-router-dom';
+
 // Simple Login
 
 function Inicio() {
@@ -17,6 +19,8 @@ function Inicio() {
   function sendMessage() {
     Socket.emit('message', username);
   };
+  const navigate = useNavigate();
+
 
 
 
@@ -37,7 +41,7 @@ function Inicio() {
                       <label className='form-label' htmlFor='nickname'>Nickname</label>
                     </div>
                     <div className='distbutton'>
-                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => sendMessage()}>Start</button>
+                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { navigate('/rooms'); sendMessage(username) }}>Start</button>
                     </div>
                   </form>
                   <div>
