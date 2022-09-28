@@ -54,18 +54,34 @@ def handle_message(data):
 @socket_io.on('createRoomInfo')
 def roomsData(data):
     print(str(data))
-    if (data['lobbyName'] not in rooms['lobbyName']):
-        rooms.append(data)
+    if rooms.get(data['lobbyName']) == None:
+        rooms[data['lobbyName']] = data
         join_room(data['lobbyName'])
+        print(rooms)
 
 
 @socket_io.on('joinRoom')
 def joinRoom(data):
     print(str(data))
-    # if (data['lobbyName'] in rooms['lobbyName']):
-    #     index = rooms.index(data['lobbyName'])
-    #     roominfo = rooms[]
-    #     emit('joinRoom', data, room=data['lobbyName'])
+    if rooms.get(data['lobbyName']) != None:
+        roominfo = rooms[data['lobbyName']]
+        if roominfo['password'] == data['password'] and int(roominfo['roomSize']) > len(roominfo['players']):
+            rooms[data['lobbyName']]['players'].append(data['username'])
+            join_room(data['lobbyName'])
+            msg = {'players': rooms[data['lobbyName']]['players']}
+            emit('updateLobby', msg, broadcast=True)
+            print('Se unio exitosamente a la sala')
+
+
+@socket_io.on('getLobbyInfo')
+def getLobbyInfo(data):
+    print('Solicitud recibida, mandando lobby info de: ' + str(data))
+    sala = rooms[data]
+    print(sala)
+    jugadores = sala['players']
+    print(jugadores)
+    jugadores = {'players': jugadores}
+    emit('lobbyInfo', jugadores)
 
 
 @app.route('/', methods=['GET', 'POST'])

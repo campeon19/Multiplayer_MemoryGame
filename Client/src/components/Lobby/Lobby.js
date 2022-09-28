@@ -13,6 +13,8 @@ function Inicio() {
   const [password, setPassword] = useState('');
   const [players, setPlayers] = useState([]);
 
+  const Socket = useContext(ContextSocket);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(username);
@@ -24,17 +26,53 @@ function Inicio() {
     setUsername(state.username);
     setNameRoom(state.nameRoom);
     setPassword(state.password);
+    setPlayers([state.username]);
     // setPlayers(players => [...players, username]);
     // setPlayers(['Chris', 'Jorge', 'Juan', 'Pedro']);
-    Socket.emit('getUsers', 'getUsers');
-    Socket.on('userslist', (data) => {
-        console.log(data);
-        setPlayers(data);
-        });
+    // Socket.emit('getUsers', 'getUsers');
+    // Socket.on('userslist', (data) => {
+    //     console.log(data + 'userslist');
+    //     // setPlayers(data);
+    //     });
+    Socket.emit('getLobbyInfo', state.nameRoom);
+    Socket.on('lobbyInfo', (data) => {
+      console.log(data + 'lobbyInfo');
+    //   if(data.length > 1){
+    //     setPlayers([data]);
+    //   } else{
+    //     setPlayers(data);
+    //   }
+    setPlayers(data['players']);
+    });
   }, []);
+
+  useEffect(() => {
+    Socket.emit('getLobbyInfo', state.nameRoom);
+    Socket.on('lobbyInfo', (data) => {
+      console.log(data + 'lobbyInfo');
+    //   if(data.length > 1){
+    //     setPlayers([data['players']]);
+    //   } else{
+    //     setPlayers(data);
+    //   }
+    setPlayers(data['players']);
+    }); 
+  }, [Socket]);
+
+
+//   setInterval(() => {
+//     Socket.on('updateLobby', (data) => {
+//         console.log(data);
+//         console.log(players)
+//         if (data != players) {
+//           setPlayers(data.players);
+//         }
+//     });
+//   }, 2000);
+
   console.log(username);
 
-  const Socket = useContext(ContextSocket);
+  
 
   function sendMessage() {
     Socket.emit('message', username);
@@ -53,7 +91,7 @@ function Inicio() {
                   <h2 className="fw-bold mb-2 text-uppercase">Lobby-{nameRoom}</h2>
                   <p className="text-white-50 mb-5">Password to enter this room:{password}</p>
                   <div className='nameCardBack'>
-                  {players.map((player, key) => {
+                  {players?.map((player, key) => {
                                     return (
                                         <div className='nameCard'>{player}</div>
                                     )

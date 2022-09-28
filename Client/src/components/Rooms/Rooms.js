@@ -41,7 +41,7 @@ function Rooms() {
   };
 
   function sendRoomsDataPublic() {
-    Socket.emit('joinRoom', { 'lobbyName': enterRoom, 'password': enterPassword });
+    Socket.emit('joinRoom', { 'lobbyName': enterRoom, 'password': enterPassword, 'username': username });
   };
 
   const navigate = useNavigate();
@@ -100,7 +100,7 @@ function Rooms() {
                       <label className='form-label' htmlFor='lobbypassword'>Password</label>
                     </div>
                     <div>
-                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsDataPublic(); navigate('/lobby', {state:{username: username}}) }}>Join</button>
+                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsDataPublic(); navigate('/lobby', {state:{username: username, nameRoom: enterRoom, password: enterPassword}}) }}>Join</button>
                     </div>
                   </form>
                 </div>
