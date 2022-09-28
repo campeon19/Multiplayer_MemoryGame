@@ -4,6 +4,7 @@ import './Lobby.scss';
 import ContextSocket from '../../context/context-socketio';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../Api/api';
+import seedrandom from 'seedrandom';
 
 // Simple Login
 
@@ -12,6 +13,9 @@ function Inicio() {
   const [nameRoom, setNameRoom] = useState('');
   const [password, setPassword] = useState('');
   const [players, setPlayers] = useState([]);
+  const [roomSize, setRoomSize] = useState('');
+  const [anfitrion, setAnfitrion] = useState('');
+  const [start, setStart] = useState(false);
 
   const Socket = useContext(ContextSocket);
 
@@ -43,41 +47,43 @@ function Inicio() {
     //     setPlayers(data);
     //   }
     setPlayers(data['players']);
+    setRoomSize(data['roomSize']);
+    setAnfitrion(data['anfitrion']);
     });
   }, []);
 
   useEffect(() => {
-    Socket.emit('getLobbyInfo', state.nameRoom);
-    Socket.on('lobbyInfo', (data) => {
-      console.log(data + 'lobbyInfo');
-    //   if(data.length > 1){
-    //     setPlayers([data['players']]);
-    //   } else{
-    //     setPlayers(data);
-    //   }
-    setPlayers(data['players']);
-    }); 
-  }, [Socket]);
+    if (start) {
+        navigate('/memory', { state: { username: username } });
+    }
+  }, [start]);
 
 
-//   setInterval(() => {
-//     Socket.on('updateLobby', (data) => {
-//         console.log(data);
-//         console.log(players)
-//         if (data != players) {
-//           setPlayers(data.players);
-//         }
-//     });
-//   }, 2000);
+  setInterval(() => {
+    Socket.on('updateLobby', (data) => {
+        console.log(data);
+        console.log(players)
+        if (data != players) {
+            setPlayers(data['players']);
+        }
+    });
+    Socket.on('startGameTrue', (data) => {
+        console.log(data);
+        if (data['start'] != start) {
+            setStart(data['start']);
+        }
+    });
 
-  console.log(username);
+  }, 2000);
 
-  
-
-  function sendMessage() {
-    Socket.emit('message', username);
-  };
   const navigate = useNavigate();
+
+  const handleStart = () => {
+    console.log('start');
+    Socket.emit('startGame', {'nameRoom': nameRoom});
+    navigate('/memory', { state: { username: username } });
+  };
+
 
   return (
 
@@ -97,10 +103,16 @@ function Inicio() {
                                     )
                     })}
                   </div>
+                  <div>
+                    <h5>{players.length}/{roomSize}</h5>
+                  </div>
                   <form onSubmit={handleSubmit}>
+                    { 
+                    players.length === parseInt(roomSize) && anfitrion === username &&
                     <div className='distbutton'>
-                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { navigate('/memory', {state:{username: username}}); sendMessage(username) }}>Start Game</button>
+                        <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={handleStart}>Start Game</button>
                     </div>
+                    }
                   </form>
                 </div>
               </div>

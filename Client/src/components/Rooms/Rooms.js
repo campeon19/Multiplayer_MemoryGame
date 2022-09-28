@@ -37,7 +37,7 @@ function Rooms() {
   const Socket = useContext(ContextSocket);
 
   function sendRoomsData() {
-    Socket.emit('createRoomInfo', { 'lobbyName': newRoom, 'password': newPassword, 'roomSize': roomSize, 'anfitrion' : username, 'players': [username]});
+    Socket.emit('createRoomInfo', { 'lobbyName': newRoom, 'password': newPassword, 'roomSize': roomSize, 'anfitrion' : username, 'players': [username], 'start': false });
   };
 
   function sendRoomsDataPublic() {

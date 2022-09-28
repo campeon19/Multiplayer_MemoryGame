@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
 from flask_session import Session
@@ -17,6 +18,16 @@ app.host = 'localhost'
 
 users = []
 rooms = {}
+games = {}
+gameStructure = {
+    'lobbyName': '',
+    'turnoActual': '',
+    'players': [],
+    'choice1': NULL,
+    'choice2': NULL,
+    'parejas_encontradas': [],
+    'winner': NULL
+}
 
 
 @socket_io.on('connect')
@@ -81,7 +92,29 @@ def getLobbyInfo(data):
     jugadores = sala['players']
     print(jugadores)
     jugadores = {'players': jugadores}
-    emit('lobbyInfo', jugadores)
+    emit('lobbyInfo', sala)
+
+
+@socket_io.on('startGame')
+def startGame(data):
+    print('Iniciando juego')
+    msg = {'start': True}
+    emit('startGameTrue', msg, to=data['nameRoom'])
+
+
+@socket_io.on('generateGame')
+def generateGame(data):
+    print('Generando juego')
+    sala = rooms[data['nameRoom']]
+    games[data['nameRoom']] = gameStructure
+    games[data['nameRoom']]['lobbyName'] = data['nameRoom']
+    games[data['nameRoom']]['turnoActual'] = sala['anfitrion']
+    for player in sala['players']:
+        games[data['nameRoom']]['players'].append(
+            {'username': player, 'score': 0})
+    juego = games[data['nameRoom']]
+    print("juego generado: " + str(juego))
+    emit('generateGameTrue', juego, to=data['nameRoom'])
 
 
 @app.route('/', methods=['GET', 'POST'])

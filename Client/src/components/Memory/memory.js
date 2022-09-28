@@ -28,9 +28,6 @@ const cardImages = [
 
 
 
-
-
-
 function Memory() {
 
     const Socket = useContext(ContextSocket);
