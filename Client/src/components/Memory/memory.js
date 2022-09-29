@@ -94,12 +94,39 @@ function Memory() {
             console.log('maso' + data['deck']);
             setCards(data['deck']);
         });
-        // Socket.on('turnUpdated', (data) => {
-        //     console.log('turno actual '+data['playerturn']);
-        //     setTimeout(() => {
-        //         setPlayerTurn(data['playerturn']);
-        //     }, 3000);
+        
+        // Socket.on('choice1Update', (data) => {
+        //     console.log(data);
+        //     console.log(state.username);
+        //     console.log(playerturn);
+        //     if (username !== playerturn && !choice1) {
+        //         cards.map((card) => {
+        //             if (card.src === data['choice1'] && card.id === data['id']) {
+        //                 setChoice1(card);
+        //             }
+        //         }
+        //         );
+        //     }
         // });
+
+        //     Socket.on('choice2Update', (data) => {
+        //         console.log(data);
+        //         console.log(state.username);
+        //         console.log(playerturn);
+        //         if (username !== playerturn && choice1 && !choice2) {
+        //             cards.map((card) => {
+        //                 if (card.src === data['choice2'] && card.id === data['id']) {
+        //                     setChoice2(card);
+        //                 }
+        //             }
+        //             );
+        //         }
+        //     });
+        
+        Socket.on('turnUpdated', (data) => {
+            console.log('turno actual '+data['playerturn']);           
+            setPlayerTurn(data['playerturn']);            
+        });
         
     }, []);
 
@@ -141,14 +168,6 @@ function Memory() {
             console.log(state.username);
             console.log(playerturn);
             if (username !== playerturn && !choice1) {
-                // handleChoice(data['choice1']);
-                // const y = []
-                // const x = Object.values(data['choice1']);
-                // console.log(x);
-                // for (let i = 0; i < x.length; i++) {
-                //     console.log(x[i]);
-                //     y.push(x[i]);
-                // }
                 cards.map((card) => {
                     if (card.src === data['choice1'] && card.id === data['id']) {
                         setChoice1(card);
@@ -171,7 +190,7 @@ function Memory() {
             }
         });
 
-      }, 4000);
+      }, 1000);
     
     const handleChoice1 = () => {
         const upd = { 'lobbyName': LobbyName, 'choice1': choice1.src, 'id': choice1.id };
@@ -220,6 +239,7 @@ function Memory() {
         if(choice1 && !choice2 && username === playerturn){
             console.log('entro ' + username + ' ' + playerturn);
             handleChoice1();
+            
         }
         if (choice1 && choice2) {
             if(username === playerturn){
@@ -263,7 +283,10 @@ function Memory() {
         setChoice2(null);
         setDisabled(false);
         setTurn(turn + 1);
-        handleTurn();
+        if(username === playerturn){
+            handleTurn();
+        }
+        
     };
 
     return (
