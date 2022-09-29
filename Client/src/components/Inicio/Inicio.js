@@ -48,7 +48,7 @@ function Inicio() {
                   <p className="text-white-50 mb-5">Please enter a nickname</p>
                   <form onSubmit={handleSubmit}>
                     <div className='form-outline form-white mb-4'>
-                      <input type='text' id='nickname' name='nickname' className='form-control form-control-lg' onChange={(e) => setUsername(e.target.value)}></input>
+                      <input type='text' id='nickname' name='nickname' className='form-control form-control-lg' maxLength='12' onChange={(e) => setUsername(e.target.value)}></input>
                       <label className='form-label' htmlFor='nickname'>Nickname</label>
                     </div>
                     <div className='distbutton'>

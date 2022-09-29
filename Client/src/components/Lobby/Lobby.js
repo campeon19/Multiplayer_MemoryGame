@@ -54,7 +54,7 @@ function Inicio() {
 
   useEffect(() => {
     if (start) {
-      navigate('/memory', { state: { username: username } });
+        navigate('/memory', { state: { username: username, lobbyName: nameRoom, anfitrion: anfitrion, playersOrder: players } });
     }
   }, [start]);
 
@@ -80,8 +80,8 @@ function Inicio() {
 
   const handleStart = () => {
     console.log('start');
-    Socket.emit('startGame', { 'nameRoom': nameRoom });
-    navigate('/memory', { state: { username: username } });
+    Socket.emit('startGame', {'nameRoom': nameRoom});
+    navigate('/memory', { state: { username: username, lobbyName: nameRoom, anfitrion: anfitrion, playersOrder: players } });
   };
 
 

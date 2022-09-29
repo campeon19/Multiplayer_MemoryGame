@@ -3,10 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './card.scss';
 
 
-function Card({ card, handleChoice, flipped, disabled }) {
+function Card({ card, handleChoice, flipped, disabled, playerturn }) {
 
   const handleClick = () => {
-    if(!disabled){
+    if(!disabled && playerturn){
         handleChoice(card);
     }
   };

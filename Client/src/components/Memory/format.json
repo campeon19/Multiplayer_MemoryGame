@@ -1,0 +1,25 @@
+{
+    "lobbyName":"",
+    "turnoActual":"",
+    "turno":0,
+    "players":[
+       {
+          "Chris":{
+             "username":"Chris",
+             "score":0
+          }
+       },
+       {
+          "Aristondo":{
+             "username":"Aristondo",
+             "score":0
+          }
+       }
+    ],
+    "choice1":0,
+    "choice2":0,
+    "parejas_encontradas":[
+       
+    ],
+    "winner":0
+}

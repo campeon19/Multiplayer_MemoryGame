@@ -1,8 +1,11 @@
 from asyncio.windows_events import NULL
+import json
+from turtle import update
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
 from flask_session import Session
-import uuid
+import random
+import json
 
 
 app = Flask(__name__)
@@ -22,11 +25,13 @@ games = {}
 gameStructure = {
     'lobbyName': '',
     'turnoActual': '',
+    'turno': 0,
     'players': [],
     'choice1': NULL,
     'choice2': NULL,
     'parejas_encontradas': [],
-    'winner': NULL
+    'winner': NULL,
+    'deck': []
 }
 
 
@@ -109,12 +114,44 @@ def generateGame(data):
     games[data['nameRoom']] = gameStructure
     games[data['nameRoom']]['lobbyName'] = data['nameRoom']
     games[data['nameRoom']]['turnoActual'] = sala['anfitrion']
+    games[data['nameRoom']]['deck'] = data['cards']
     for player in sala['players']:
         games[data['nameRoom']]['players'].append(
-            {'username': player, 'score': 0})
-    juego = games[data['nameRoom']]
+            {player: {'username': player, 'score': 0}})
+    juego = json.dumps(games[data['nameRoom']])
     print("juego generado: " + str(juego))
     emit('generateGameTrue', juego, to=data['nameRoom'])
+
+
+@socket_io.on('choice1')
+def choice1(data):
+    print('Choice 1 recibido: ' + str(data))
+    games[data['lobbyName']]['choice1'] = data['choice1']
+    upd = {'choice1': data['choice1'], 'id': data['id']}
+    emit('choice1Update', upd, to=data['lobbyName'])
+
+
+@socket_io.on('choice2')
+def choice2(data):
+    print('Choice 2 recibido: ' + str(data))
+    games[data['lobbyName']]['choice2'] = data['choice2']
+    upd = {'choice2': data['choice2'], 'id': data['id']}
+    emit('choice2Update', upd, to=data['lobbyName'])
+
+
+@socket_io.on('turn')
+def choice2(data):
+    print('Cambio de turno recibido: ' + str(data))
+    games[data['lobbyName']]['turnoActual'] = data['playerturn']
+    upd = {'playerturn': data['playerturn']}
+    emit('turnUpdated', upd, to=data['lobbyName'])
+
+
+@socket_io.on('gamestatus')
+def gamestatus(data):
+    print('Solicitud recibida, mandando estado del juego' + str(data))
+    games[data['lobbyName']] = data
+    emit('gamestatusUpdate', data, to=data['lobbyName'])
 
 
 @app.route('/', methods=['GET', 'POST'])
