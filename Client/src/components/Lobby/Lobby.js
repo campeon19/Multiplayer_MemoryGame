@@ -41,37 +41,37 @@ function Inicio() {
     Socket.emit('getLobbyInfo', state.nameRoom);
     Socket.on('lobbyInfo', (data) => {
       console.log(data + 'lobbyInfo');
-    //   if(data.length > 1){
-    //     setPlayers([data]);
-    //   } else{
-    //     setPlayers(data);
-    //   }
-    setPlayers(data['players']);
-    setRoomSize(data['roomSize']);
-    setAnfitrion(data['anfitrion']);
+      //   if(data.length > 1){
+      //     setPlayers([data]);
+      //   } else{
+      //     setPlayers(data);
+      //   }
+      setPlayers(data['players']);
+      setRoomSize(data['roomSize']);
+      setAnfitrion(data['anfitrion']);
     });
   }, []);
 
   useEffect(() => {
     if (start) {
-        navigate('/memory', { state: { username: username } });
+      navigate('/memory', { state: { username: username } });
     }
   }, [start]);
 
 
   setInterval(() => {
     Socket.on('updateLobby', (data) => {
-        console.log(data);
-        console.log(players)
-        if (data != players) {
-            setPlayers(data['players']);
-        }
+      console.log(data);
+      console.log(players)
+      if (data != players) {
+        setPlayers(data['players']);
+      }
     });
     Socket.on('startGameTrue', (data) => {
-        console.log(data);
-        if (data['start'] != start) {
-            setStart(data['start']);
-        }
+      console.log(data);
+      if (data['start'] != start) {
+        setStart(data['start']);
+      }
     });
 
   }, 2000);
@@ -80,7 +80,7 @@ function Inicio() {
 
   const handleStart = () => {
     console.log('start');
-    Socket.emit('startGame', {'nameRoom': nameRoom});
+    Socket.emit('startGame', { 'nameRoom': nameRoom });
     navigate('/memory', { state: { username: username } });
   };
 
@@ -97,21 +97,21 @@ function Inicio() {
                   <h2 className="fw-bold mb-2 text-uppercase">Lobby-{nameRoom}</h2>
                   <p className="text-white-50 mb-5">Password to enter this room:{password}</p>
                   <div className='nameCardBack'>
-                  {players?.map((player, key) => {
-                                    return (
-                                        <div className='nameCard'>{player}</div>
-                                    )
+                    {players?.map((player, key) => {
+                      return (
+                        <div className='nameCard'>{player}</div>
+                      )
                     })}
                   </div>
                   <div>
                     <h5>{players.length}/{roomSize}</h5>
                   </div>
                   <form onSubmit={handleSubmit}>
-                    { 
-                    players.length === parseInt(roomSize) && anfitrion === username &&
-                    <div className='distbutton'>
+                    {
+                      players.length === parseInt(roomSize) && anfitrion === username &&
+                      <div className='distbutton'>
                         <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={handleStart}>Start Game</button>
-                    </div>
+                      </div>
                     }
                   </form>
                 </div>

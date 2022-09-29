@@ -37,15 +37,15 @@ function Rooms() {
   const Socket = useContext(ContextSocket);
 
   function sendRoomsData() {
-    Socket.emit('createRoomInfo', { 'lobbyName': newRoom, 'password': newPassword, 'roomSize': roomSize, 'anfitrion' : username, 'players': [username], 'start': false });
+    Socket.emit('createRoomInfo', { 'lobbyName': newRoom, 'password': newPassword, 'roomSize': roomSize, 'anfitrion': username, 'players': [username], 'start': false });
   };
 
   function sendRoomsDataPublic() {
     Socket.emit('joinRoom', { 'lobbyName': enterRoom, 'password': enterPassword, 'username': username });
   };
 
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
 
 
 
@@ -85,7 +85,7 @@ function Rooms() {
                       </div>
                     </div>
                     <div>
-                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsData(); navigate('/lobby', {state:{username: username, nameRoom: newRoom, password: newPassword}}) }}> Start</button>
+                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsData(); navigate('/lobby', { state: { username: username, nameRoom: newRoom, password: newPassword } }) }}> Start</button>
                     </div>
                   </form>
                   <h4 className="mb-2 text-uppercase space">Or</h4>
@@ -100,7 +100,7 @@ function Rooms() {
                       <label className='form-label' htmlFor='lobbypassword'>Password</label>
                     </div>
                     <div>
-                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsDataPublic(); navigate('/lobby', {state:{username: username, nameRoom: enterRoom, password: enterPassword}}) }}>Join</button>
+                      <button type='submit' className='btn btn-outline-light btn-lg px-5' onClick={() => { sendRoomsDataPublic(); navigate('/lobby', { state: { username: username, nameRoom: enterRoom, password: enterPassword } }) }}>Join</button>
                     </div>
                   </form>
                 </div>
