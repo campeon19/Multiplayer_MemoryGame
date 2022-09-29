@@ -1,9 +1,5 @@
-from asyncio.windows_events import NULL
-import json
-from turtle import update
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
-from flask_session import Session
 import random
 import json
 
@@ -27,10 +23,10 @@ gameStructure = {
     'turnoActual': '',
     'turno': 0,
     'players': [],
-    'choice1': NULL,
-    'choice2': NULL,
+    'choice1': '',
+    'choice2': '',
     'parejas_encontradas': [],
-    'winner': NULL,
+    'winner': '',
     'deck': []
 }
 
