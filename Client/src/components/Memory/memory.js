@@ -33,20 +33,6 @@ function Memory() {
     const Socket = useContext(ContextSocket);
 
 
-    // useEffect(() => {
-    //     Socket.on("data", (data) => {
-    //         setMessages([...messages, data.data]);
-    //     });
-    //     return () => {
-    //         Socket.off("data", () => {
-    //             console.log("data event was removed");
-    //         });
-    //     };
-    // }, [Socket, messages])
-
-
-
-
     const [cards, setCards] = useState([]);
     const [players, setPlayers] = useState([]);
     const [choice1, setChoice1] = useState(null);
@@ -95,33 +81,6 @@ function Memory() {
             setCards(data['deck']);
         });
         
-        // Socket.on('choice1Update', (data) => {
-        //     console.log(data);
-        //     console.log(state.username);
-        //     console.log(playerturn);
-        //     if (username !== playerturn && !choice1) {
-        //         cards.map((card) => {
-        //             if (card.src === data['choice1'] && card.id === data['id']) {
-        //                 setChoice1(card);
-        //             }
-        //         }
-        //         );
-        //     }
-        // });
-
-        //     Socket.on('choice2Update', (data) => {
-        //         console.log(data);
-        //         console.log(state.username);
-        //         console.log(playerturn);
-        //         if (username !== playerturn && choice1 && !choice2) {
-        //             cards.map((card) => {
-        //                 if (card.src === data['choice2'] && card.id === data['id']) {
-        //                     setChoice2(card);
-        //                 }
-        //             }
-        //             );
-        //         }
-        //     });
         
         Socket.on('turnUpdated', (data) => {
             console.log('turno actual '+data['playerturn']);           
@@ -142,27 +101,7 @@ function Memory() {
     };
 
     setInterval(() => {
-        // Socket.on('gamestatusUpdate', (data) => {
-        //     console.log(data);
-        //     if (username != playerturn) { 
-        //         setChoice1(data['choice1']);
-        //         setChoice2(data['choice2']);   
-        //         setTurn(data['turn']);
-        //         setPlayerTurn(data['turnoActual']);
-        //         setLobbyInfo(data);
-        //         console.log('choice1: ' + data['choice1']);
-        //         console.log('choice2: ' + data['choice2']);
-        //         console.log('turn: ' + data['turn']);
-        //         console.log('turnoActual: ' + data['turnoActual']);
-        //         console.log('lobbyInfo: ' + data);
-        //     }
-        // });
-        // Socket.on('choice1Update', (data) => {
-        //     console.log(data);
-        //     if (username != playerturn) {
-        //         setChoice1(data['choice1']);
-        //     }
-        // });
+
         Socket.on('choice1Update', (data) => {
             console.log(data);
             console.log(state.username);
@@ -208,26 +147,6 @@ function Memory() {
         setPlayerTurn(newTurn);
         const upd = { 'lobbyName': LobbyName, 'playerturn': newTurn };
         Socket.emit('turn', upd);
-    };
-
-    const UpdateRoomInfo = (cambio) => {
-        const sala = lobbyInfo;
-        sala['turno'] = turn;
-        if(choice1 != null){
-            sala['choice1'] = { 'src': choice1.src, matched: choice1.matched };
-        }
-        if(choice2 != null){
-            sala['choice2'] = { 'src': choice2.src, matched: choice2.matched };
-        }
-        if(cambio){
-            const index = playerOrder.indexOf(username);
-            const newTurn = playerOrder[(index + 1) % playerOrder.length];
-            sala['turnoActual'] = newTurn;
-            setPlayerTurn(newTurn);
-        }
-        console.log(sala);
-        setLobbyInfo(sala);
-        Socket.emit('gamestatus', sala);
     };
 
     const handleChoice = (card) => {
@@ -314,6 +233,7 @@ function Memory() {
                         </div>
                         <div className='esp'>
                             <h5>Turns: {turn}</h5>
+                            <h5>Turno de jugador: {playerturn}</h5>
                         </div>
                     </div>
                     <div className='col-8'>

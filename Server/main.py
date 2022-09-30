@@ -81,7 +81,7 @@ def joinRoom(data):
             rooms[data['lobbyName']]['players'].append(data['username'])
             join_room(data['lobbyName'])
             msg = {'players': rooms[data['lobbyName']]['players']}
-            emit('updateLobby', msg, broadcast=True)
+            emit('updateLobby', msg, to=data['lobbyName'])
             print('Se unio exitosamente a la sala')
 
 
@@ -150,16 +150,10 @@ def gamestatus(data):
     emit('gamestatusUpdate', data, to=data['lobbyName'])
 
 
-@app.route('/', methods=['GET', 'POST'])
-def chat():
-    if(request.method == 'POST'):
-        username = request.form('username')
-
-        # Store the data in sessions
-        session['username'] = username
-
-        return session['username']
-
-
 if __name__ == '__main__':
-    socket_io.run(app, host='0.0.0.0', port=5000)
+    import sys
+    PORT = 5000
+    if len(sys.argv) > 1:
+        PORT = sys.argv[1]
+    print(f"{PORT = }")
+    socket_io.run(app, port=PORT, host='0.0.0.0')

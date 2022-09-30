@@ -1,0 +1,112 @@
+# Protocolo
+
+## Server -> Client
+{
+    'type': 'Login',
+    'username': 'username'
+}
+
+## Client -> Server
+{
+    'type': 'RoomCreation',
+    'LobbyName': 'LobbyName',
+    'LobbyPassword': 'Password',
+    'LobbySize': <number>,
+    'Anfitrion': 'Anfitrion'
+}
+
+## Server -> Client
+{
+    'type': 'RoomCreationVal',
+    'LobbyName' : 'LobbyName'
+}
+
+## Client -> Server
+{
+    type: 'JoinRoom',
+    'LobbyName': 'LobbyName',
+    'LobbyPassword': 'Password',
+    'username': 'username'
+}
+
+## Server -> Client
+{
+    'type': 'JoinRoomVal',
+    'LobbyName' : 'LobbyName',
+    'LobbySize' : 'LobbySize',
+    'canJoin' : <true/false>
+}
+
+## Server -> Client
+{
+    'type' : 'LobbyWaiting',
+    'LobbyName' : 'LobbyName',
+    'LobbyPassword' : 'LobbyPassword',
+    'Anfitrion' : 'Anfitrion',
+    'LobbySize' : 'LobbySize',
+    'Players' : [<List of players>]
+    'Start' : <True/False>
+}
+
+## Client -> Server
+{
+    'type': 'Lobby'
+    'Start' : <True/False>
+    'LobbyName':'LobbyName'
+}
+
+## Client -> Server
+{
+    'type': 'GenerateGame',
+    'LobbyName' : 'LobbyName'
+    'Deck' : <deck>
+}
+
+## Server -> Client
+{
+    'type': 'GenerateGameInfo'
+    {
+    "lobbyName":"",
+    "turnoActual":"",
+    "turno":0,
+    "players":[{
+        'username':{
+            'username' : 'username'
+            'score': 'score'
+        }, ...
+    }],
+    "playersOrder": [<list of players>]
+    "choice1":0,
+    "choice2":0,
+    "winner":0
+}
+
+## Client -> Server
+{
+    'type' : 'turnUpdate',
+    'LobbyName' : 'LobbyName',
+    'choice1': 'choice1',
+    'choice2' : 'choice2',
+    'turnoActual' : 'turnoActual',
+    "players":[{
+        'username':{
+        'username' : 'username'
+        'score': 'score'
+        }, ...
+    }],
+}
+
+## Server -> Client
+{
+    'type' : 'turnUpdateBrodcast'
+    'LobbyName' : 'LobbyName',
+    'choice1': 'choice1',
+    'choice2' : 'choice2',
+    'turnoActual' : 'turnoActual',
+    "players":[{
+        'username':{
+        'username' : 'username'
+        'score': 'score'
+        }, ...
+    }],
+}

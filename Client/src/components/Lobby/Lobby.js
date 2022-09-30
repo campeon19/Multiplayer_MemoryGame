@@ -31,21 +31,11 @@ function Inicio() {
     setNameRoom(state.nameRoom);
     setPassword(state.password);
     setPlayers([state.username]);
-    // setPlayers(players => [...players, username]);
-    // setPlayers(['Chris', 'Jorge', 'Juan', 'Pedro']);
-    // Socket.emit('getUsers', 'getUsers');
-    // Socket.on('userslist', (data) => {
-    //     console.log(data + 'userslist');
-    //     // setPlayers(data);
-    //     });
+
     Socket.emit('getLobbyInfo', state.nameRoom);
     Socket.on('lobbyInfo', (data) => {
       console.log(data + 'lobbyInfo');
-      //   if(data.length > 1){
-      //     setPlayers([data]);
-      //   } else{
-      //     setPlayers(data);
-      //   }
+ 
       setPlayers(data['players']);
       setRoomSize(data['roomSize']);
       setAnfitrion(data['anfitrion']);

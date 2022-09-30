@@ -9,7 +9,7 @@ export function ContextSocketProvider({ children }) {
     useEffect(() => {
         const SOCKET_URI = process.env.REACT_APP_SOCKET
         // const socket = client(SOCKET_URI)
-        const socket = client('http://143.198.188.42:5000')
+        const socket = client('https://memorygame.ml')
         setSocket(socket)
 
     }, [])

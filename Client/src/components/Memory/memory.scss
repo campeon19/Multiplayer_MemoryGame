@@ -29,7 +29,7 @@
 }
 
 .container-xxl .info-chat{
-    display: flex;
+    // display: flex;
     justify-content: center;
     margin-top: 20px;
     // margin-right: 50px;
@@ -54,4 +54,22 @@ th {
     
 td {
     text-align: center;
+}
+
+.chattext{
+    font-size: 1em;
+    font-weight: 400;
+    color: #666;
+    text-align: center;
+}
+
+.col-2.info-chat .chat-input{
+    display: inline-block;
+    bottom: 0px;
+}
+
+.col-2.info-chat .chat{
+    position: relative;
+    height: 200px;
+
 }
